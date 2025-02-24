@@ -1,79 +1,54 @@
-apiVersion: v1
-kind: Pod
+apiVersion: &id001 []
+kind: *id001
 metadata:
   annotations:
     kubeadm:
       kubernetes:
         io/etcd:
-          advertise-client-urls: https://10.0.111.33:2379
-  creationTimestamp: .nan
+          advertise-client-urls: *id001
+  creationTimestamp: *id001
   labels:
-    component: etcd
-    tier: control-plane
-  name: etcd
-  namespace: kube-system
+    component: *id001
+    tier: *id001
+  name: *id001
+  namespace: *id001
 spec:
-  containers[0]:
-    command[0]: etcd
-    command[10]: --listen-peer-urls=https://10.0.111.33:2380
-    command[11]: --name=hlocs01vmmaster01
-    command[12]: --peer-cert-file=/etc/kubernetes/pki/etcd/peer.crt
-    command[13]: --peer-client-cert-auth=true
-    command[14]: --peer-key-file=/etc/kubernetes/pki/etcd/peer.key
-    command[15]: --peer-trusted-ca-file=/etc/kubernetes/pki/etcd/ca.crt
-    command[16]: --snapshot-count=10000
-    command[17]: --trusted-ca-file=/etc/kubernetes/pki/etcd/ca.crt
-    command[1]: --advertise-client-urls=https://10.0.111.33:2379
-    command[2]: --cert-file=/etc/kubernetes/pki/etcd/server.crt
-    command[3]: --client-cert-auth=true
-    command[4]: --data-dir=/var/lib/etcd
-    command[5]: --initial-advertise-peer-urls=https://10.0.111.33:2380
-    command[6]: --initial-cluster=hlocs01vmmaster01=https://10.0.111.33:2380
-    command[7]: --key-file=/etc/kubernetes/pki/etcd/server.key
-    command[8]: --listen-client-urls=https://127.0.0.1:2379,https://10.0.111.33:2379
-    command[9]: --listen-metrics-urls=http://127.0.0.1:2381
-    image: docker-registry:4000/k8s.gcr.io/etcd:3.4.13-0
-    imagePullPolicy: IfNotPresent
+  containers:
+    command: *id001
+    image: *id001
+    imagePullPolicy: *id001
     livenessProbe:
-      failureThreshold: 8
+      failureThreshold: *id001
       httpGet:
-        host: 127.0.0.1
-        path: /health
-        port: 2381
-        scheme: HTTP
-      initialDelaySeconds: 10
-      periodSeconds: 10
-      timeoutSeconds: 15
-    name: etcd
+        host: *id001
+        path: *id001
+        port: *id001
+        scheme: *id001
+      initialDelaySeconds: *id001
+      periodSeconds: *id001
+      timeoutSeconds: *id001
+    name: *id001
     resources:
       requests:
-        cpu: 100m
-        memory: 100Mi
+        cpu: *id001
+        memory: *id001
     startupProbe:
-      failureThreshold: 24
+      failureThreshold: *id001
       httpGet:
-        host: 127.0.0.1
-        path: /health
-        port: 2381
-        scheme: HTTP
-      initialDelaySeconds: 10
-      periodSeconds: 10
-      timeoutSeconds: 15
-    volumeMounts[0]:
-      mountPath: /var/lib/etcd
-      name: etcd-data
-    volumeMounts[1]:
-      mountPath: /etc/kubernetes/pki/etcd
-      name: etcd-certs
-  hostNetwork: true
-  priorityClassName: system-node-critical
-  volumes[0]:
+        host: *id001
+        path: *id001
+        port: *id001
+        scheme: *id001
+      initialDelaySeconds: *id001
+      periodSeconds: *id001
+      timeoutSeconds: *id001
+    volumeMounts:
+      mountPath: *id001
+      name: *id001
+  hostNetwork: *id001
+  priorityClassName: *id001
+  volumes:
     hostPath:
-      path: /etc/kubernetes/pki/etcd
-      type: DirectoryOrCreate
-    name: etcd-certs
-  volumes[1]:
-    hostPath:
-      path: /var/lib/etcd
-      type: DirectoryOrCreate
-    name: etcd-data
+      path: *id001
+      type: *id001
+    name: *id001
