@@ -4,7 +4,7 @@ import os
 import re
 
 # Đường dẫn đến file Excel
-file_path = "etcd.xlsx"  # Thay đổi tên file .xlsx của bạn nếu cần
+file_path = "etcd.xlsx"
 
 # Kiểm tra xem file có tồn tại không
 if not os.path.exists(file_path):
@@ -70,7 +70,7 @@ else:
             adjust_single_value_lists(yaml_dict)
 
             # Lưu kết quả vào file YAML
-            output_file = "output4444.yaml"
+            output_file = "version_4_output.yaml"
             with open(output_file, "w") as file:
                 yaml.dump(yaml_dict, file, default_flow_style=False, sort_keys=False)
 
