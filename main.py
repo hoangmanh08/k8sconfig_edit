@@ -22,7 +22,7 @@ for _, row in df.iterrows():
     temp[keys[-1]] = value  # Assign the final value
 
 # Save to a YAML file
-with open("output.yaml", "w") as file:
-    yaml.dump(yaml_dict, file, default_flow_style=False)
+with open("output1.yaml", "w") as file:
+    yaml.dump(yaml_dict, file, default_flow_style=False, sort_keys=False)
 
 print("YAML file created: output.yaml")
