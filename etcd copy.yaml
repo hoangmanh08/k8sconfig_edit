@@ -1,0 +1,16 @@
+spec:
+  containers:
+  - command:
+    - etcd
+    - --advertise-client-urls=https://172.1.1.112:2379
+    - --cert-file=/etc/kubernetes/pki/etcd/server.crt
+    - --client-cert-auth=true
+  volumes:
+  - hostPath:
+      path: /etc/kubernetes/pki/etcd
+      type: DirectoryOrCreate
+    name: etcd-certs
+  - hostPath:
+      path: /etcd
+      type: DirectoryOrCreate
+    name: etcd-data

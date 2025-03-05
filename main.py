@@ -2,7 +2,7 @@ import pandas as pd
 import yaml
 
 # Load the Excel file
-file_path = "etcd.xlsx"  # Change file name .xlsx
+file_path = "etcd_edit.xlsx"  # Change file name .xlsx
 df = pd.read_excel(file_path)
 
 # Convert the DataFrame to a dictionary
@@ -22,7 +22,7 @@ for _, row in df.iterrows():
     temp[keys[-1]] = value  # Assign the final value
 
 # Save to a YAML file
-with open("output1.yaml", "w") as file:
+with open("output_edit.yaml", "w") as file:
     yaml.dump(yaml_dict, file, default_flow_style=False, sort_keys=False)
 
 print("YAML file created: output.yaml")
