@@ -2,35 +2,34 @@ apiVersion: v1
 kind: Pod
 metadata:
   annotations:
-    kubeadm:
-      kubernetes:
-        io/etcd:
-          advertise-client-urls: https://10.0.111.33:2379
+    kubeadm.kubernetes.io/etcd.advertise-client-urls: https://10.0.111.33:2379
+  creationTimestamp: null
   labels:
     component: etcd
     tier: control-plane
   name: etcd
   namespace: kube-system
 spec:
-  containers[0]:
-    command[0]: etcd
-    command[10]: --listen-peer-urls=https://10.0.111.33:2380
-    command[11]: --name=hlocs01vmmaster01
-    command[12]: --peer-cert-file=/etc/kubernetes/pki/etcd/peer.crt
-    command[13]: --peer-client-cert-auth=true
-    command[14]: --peer-key-file=/etc/kubernetes/pki/etcd/peer.key
-    command[15]: --peer-trusted-ca-file=/etc/kubernetes/pki/etcd/ca.crt
-    command[16]: --snapshot-count=10000
-    command[17]: --trusted-ca-file=/etc/kubernetes/pki/etcd/ca.crt
-    command[1]: --advertise-client-urls=https://10.0.111.33:2379
-    command[2]: --cert-file=/etc/kubernetes/pki/etcd/server.crt
-    command[3]: --client-cert-auth=true
-    command[4]: --data-dir=/var/lib/etcd
-    command[5]: --initial-advertise-peer-urls=https://10.0.111.33:2380
-    command[6]: --initial-cluster=hlocs01vmmaster01=https://10.0.111.33:2380
-    command[7]: --key-file=/etc/kubernetes/pki/etcd/server.key
-    command[8]: --listen-client-urls=https://127.0.0.1:2379,https://10.0.111.33:2379
-    command[9]: --listen-metrics-urls=http://127.0.0.1:2381
+  containers:
+  - command:
+    - etcd
+    - --advertise-client-urls=https://10.0.111.33:2379
+    - --cert-file=/etc/kubernetes/pki/etcd/server.crt
+    - --client-cert-auth=true
+    - --data-dir=/var/lib/etcd
+    - --initial-advertise-peer-urls=https://10.0.111.33:2380
+    - --initial-cluster=hlocs01vmmaster01=https://10.0.111.33:2380
+    - --key-file=/etc/kubernetes/pki/etcd/server.key
+    - --listen-client-urls=https://127.0.0.1:2379,https://10.0.111.33:2379
+    - --listen-metrics-urls=http://127.0.0.1:2381
+    - --listen-peer-urls=https://10.0.111.33:2380
+    - --name=hlocs01vmmaster01
+    - --peer-cert-file=/etc/kubernetes/pki/etcd/peer.crt
+    - --peer-client-cert-auth=true
+    - --peer-key-file=/etc/kubernetes/pki/etcd/peer.key
+    - --peer-trusted-ca-file=/etc/kubernetes/pki/etcd/ca.crt
+    - --snapshot-count=10000
+    - --trusted-ca-file=/etc/kubernetes/pki/etcd/ca.crt
     image: docker-registry:4000/k8s.gcr.io/etcd:3.4.13-0
     imagePullPolicy: IfNotPresent
     livenessProbe:
@@ -58,21 +57,19 @@ spec:
       initialDelaySeconds: 10
       periodSeconds: 10
       timeoutSeconds: 15
-    volumeMounts[0]:
-      mountPath: /var/lib/etcd
+    volumeMounts:
+    - mountPath: /var/lib/etcd
       name: etcd-data
-    volumeMounts[1]:
-      mountPath: /etc/kubernetes/pki/etcd
+    - mountPath: /etc/kubernetes/pki/etcd
       name: etcd-certs
   hostNetwork: true
   priorityClassName: system-node-critical
-  volumes[0]:
-    hostPath:
+  volumes:
+  - hostPath:
       path: /etc/kubernetes/pki/etcd
       type: DirectoryOrCreate
     name: etcd-certs
-  volumes[1]:
-    hostPath:
+  - hostPath:
       path: /var/lib/etcd
       type: DirectoryOrCreate
     name: etcd-data
