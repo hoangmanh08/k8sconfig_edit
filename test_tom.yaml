@@ -1,0 +1,268 @@
+oom_score: 0
+plugin_dir: ''
+root: /containerd
+state: /run/containerd
+temp: ''
+version: 2
+cgroup:
+  path: ''
+debug:
+  address: ''
+  format: ''
+  gid: 0
+  level: ''
+  uid: 0
+grpc:
+  address: /run/containerd/containerd.sock
+  gid: 0
+  max_recv_message_size: 16777216
+  max_send_message_size: 16777216
+  tcp_address: ''
+  tcp_tls_ca: ''
+  tcp_tls_cert: ''
+  tcp_tls_key: ''
+  uid: 0
+metrics:
+  address: ''
+  grpc_histogram: 'false'
+plugins:
+  io:
+    containerd:
+      gc:
+        v1:
+          scheduler:
+            deletion_threshold: 0
+            mutation_threshold: 100
+            pause_threshold: 0.02
+            schedule_delay: 0s
+            startup_delay: 100ms
+      grpc:
+        v1:
+          cri:
+            cdi_spec_dirs[0]: /etc/cdi
+            cdi_spec_dirs[1]: /var/run/cdi
+            device_ownership_from_security_context: 'false'
+            disable_apparmor: 'false'
+            disable_cgroup: 'false'
+            disable_hugetlb_controller: 'true'
+            disable_proc_mount: 'false'
+            disable_tcp_service: 'true'
+            drain_exec_sync_io_timeout: 0s
+            enable_cdi: 'false'
+            enable_selinux: 'false'
+            enable_tls_streaming: 'false'
+            enable_unprivileged_icmp: 'false'
+            enable_unprivileged_ports: 'false'
+            ignore_image_defined_volumes: 'false'
+            image_pull_progress_timeout: 5m0s
+            max_concurrent_downloads: 3
+            max_container_log_line_size: 16384
+            netns_mounts_under_state_dir: 'false'
+            restrict_oom_score_adj: 'false'
+            sandbox_image: 172.32.112.89:8018/registry.k8s.io/pause:3.10
+            selinux_category_range: 1024
+            stats_collect_period: 10
+            stream_idle_timeout: 4h0m0s
+            stream_server_address: 127.0.0.1
+            stream_server_port: '0'
+            systemd_cgroup: 'false'
+            tolerate_missing_hugetlb_controller: 'true'
+            unset_seccomp_profile: ''
+            cni:
+              bin_dir: /opt/cni/bin
+              conf_dir: /etc/cni/net.d
+              conf_template: ''
+              ip_pref: ''
+              max_conf_num: 1
+              setup_serially: 'false'
+            containerd:
+              default_runtime_name: runc
+              disable_snapshot_annotations: 'true'
+              discard_unpacked_layers: 'false'
+              ignore_blockio_not_enabled_errors: 'false'
+              ignore_rdt_not_enabled_errors: 'false'
+              no_pivot: 'false'
+              snapshotter: overlayfs
+              default_runtime:
+                base_runtime_spec: ''
+                cni_conf_dir: ''
+                cni_max_conf_num: 0
+                privileged_without_host_devices: 'false'
+                privileged_without_host_devices_all_devices_allowed: 'false'
+                runtime_engine: ''
+                runtime_path: ''
+                runtime_root: ''
+                runtime_type: ''
+                sandbox_mode: ''
+                snapshotter: ''
+              runtimes:
+                runc:
+                  base_runtime_spec: ''
+                  cni_conf_dir: ''
+                  cni_max_conf_num: 0
+                  privileged_without_host_devices: 'false'
+                  privileged_without_host_devices_all_devices_allowed: 'false'
+                  runtime_engine: ''
+                  runtime_path: ''
+                  runtime_root: ''
+                  runtime_type: io.containerd.runc.v2
+                  sandbox_mode: podsandbox
+                  snapshotter: ''
+                  options:
+                    BinaryName: ''
+                    CriuImagePath: ''
+                    CriuPath: ''
+                    CriuWorkPath: ''
+                    IoGid: 0
+                    IoUid: 0
+                    NoNewKeyring: 'false'
+                    NoPivotRoot: 'false'
+                    Root: ''
+                    ShimCgroup: ''
+                    SystemdCgroup: 'true'
+              untrusted_workload_runtime:
+                base_runtime_spec: ''
+                cni_conf_dir: ''
+                cni_max_conf_num: 0
+                privileged_without_host_devices: 'false'
+                privileged_without_host_devices_all_devices_allowed: 'false'
+                runtime_engine: ''
+                runtime_path: ''
+                runtime_root: ''
+                runtime_type: ''
+                sandbox_mode: ''
+                snapshotter: ''
+            image_decryption:
+              key_model: node
+            registry:
+              config_path: /etc/containerd/certs.d
+            x509_key_pair_streaming:
+              tls_cert_file: ''
+              tls_key_file: ''
+      internal:
+        v1:
+          opt:
+            path: /opt/containerd
+          restart:
+            interval: 10s
+          tracing:
+            sampling_ratio: 1
+            service_name: containerd
+      metadata:
+        v1:
+          bolt:
+            content_sharing_policy: shared
+      monitor:
+        v1:
+          cgroups:
+            no_prometheus: 'false'
+      nri:
+        v1:
+          nri:
+            disable: 'true'
+            disable_connections: 'false'
+            plugin_config_path: /etc/nri/conf.d
+            plugin_path: /opt/nri/plugins
+            plugin_registration_timeout: 5s
+            plugin_request_timeout: 2s
+            socket_path: /var/run/nri/nri.sock
+      runtime:
+        v1:
+          linux:
+            no_shim: 'false'
+            runtime: runc
+            runtime_root: ''
+            shim: containerd-shim
+            shim_debug: 'false'
+        v2:
+          task:
+            platforms[0]: linux/amd64
+            sched_core: 'false'
+      service:
+        v1:
+          diff-service:
+            default[0]: walking
+          tasks-service:
+            blockio_config_file: ''
+            rdt_config_file: ''
+      snapshotter:
+        v1:
+          aufs:
+            root_path: ''
+          blockfile:
+            fs_type: ''
+            root_path: ''
+            scratch_file: ''
+          btrfs:
+            root_path: ''
+          devmapper:
+            async_remove: 'false'
+            base_image_size: ''
+            discard_blocks: 'false'
+            fs_options: ''
+            fs_type: ''
+            pool_name: ''
+            root_path: ''
+          native:
+            root_path: ''
+          overlayfs:
+            root_path: ''
+            sync_remove: 'false'
+            upperdir_label: 'false'
+          zfs:
+            root_path: ''
+      tracing:
+        processor:
+          v1:
+            otlp:
+              endpoint: ''
+              insecure: 'false'
+              protocol: ''
+      transfer:
+        v1:
+          local:
+            config_path: ''
+            max_concurrent_downloads: 3
+            max_concurrent_uploaded_layers: 3
+            unpack_config[0]:
+              differ: ''
+              platform: linux/amd64
+              snapshotter: overlayfs
+stream_processors:
+  io:
+    containerd:
+      ocicrypt:
+        decoder:
+          v1:
+            tar:
+              accepts[0]: application/vnd.oci.image.layer.v1.tar+encrypted
+              args[0]: --decryption-keys-path
+              args[1]: /etc/containerd/ocicrypt/keys
+              env[0]: OCICRYPT_KEYPROVIDER_CONFIG=/etc/containerd/ocicrypt/ocicrypt_keyprovider.conf
+              path: ctd-decoder
+              returns: application/vnd.oci.image.layer.v1.tar
+              gzip:
+                accepts[0]: application/vnd.oci.image.layer.v1.tar+gzip+encrypted
+                args[0]: --decryption-keys-path
+                args[1]: /etc/containerd/ocicrypt/keys
+                env[0]: OCICRYPT_KEYPROVIDER_CONFIG=/etc/containerd/ocicrypt/ocicrypt_keyprovider.conf
+                path: ctd-decoder
+                returns: application/vnd.oci.image.layer.v1.tar+gzip
+timeouts:
+  io:
+    containerd:
+      timeout:
+        bolt:
+          open: 0s
+        metrics:
+          shimstats: 2s
+        shim:
+          cleanup: 5s
+          load: 5s
+          shutdown: 3s
+        task:
+          state: 2s
+ttrpc:
+  address: ''
+  gid: 0
+  uid: 0
