@@ -1,0 +1,77 @@
+apiVersion: v1 #phiên bản API Kurbernets
+kind: Pod #loại đối tượng trong Kubernetes
+metadata: # thông tin về đối tượng(có thể hiểu như lớp)
+  annotations: #chú thích các thông tin bổ sung
+    kubeadm.kubernetes.io/etcd.advertise-client-urls: https://10.0.111.33:2379
+  creationTimestamp: null #thời gian tạo đối tượng [gán tg khi đối tượng được tạo ra]
+  labels: #nhãn dùng để phân loại và nhóm các đối tượng trong Kubernetes (chọn lựa và lọc các đối tượng)
+    component: etcd #chỉ rằng Pod này là một phần của etcd (một cơ sở dữ liệu phân tán trong Kubernetes) [k gán]
+    tier: control-plane #cho biết Pod này thuộc lớp điều khiển trong kiến trúc của Kubernetes [k gán]
+  name: etcd #tên của đối tượng trong Kubernetes, tên của Pod trong trường hợp này [Kubernetes tự tạo tên]
+  namespace: kube-system #không gian tên của đối tượng trong Kubernetes [default]
+                          #kube-system : không gian tên đặc biệt trong Kubernetes, chứa các thành phần hệ thống của Kubernetes như các Pod quản lý cluster, các dịch vụ cần thiết cho cluster hoạt động.
+spec: #cấu hình chi tiết cho các đối tượng con trong Pod
+  containers: #container được chạy trong Pod
+  - command: #danh sách các lệnh sẽ được chạy
+    - etcd
+    - --advertise-client-urls=https://10.0.111.33:2379 #URL mà các client sử dụng để giao tiếp với etcd
+    - --cert-file=/etc/kubernetes/pki/etcd/server.crt #Đường dẫn tới chứng chỉ SSL của etcd, Đường dẫn tới chứng chỉ máy chủ
+    - --client-cert-auth=true #Kích hoạt xác thực bằng chứng chỉ cho các client khi chúng kết nối tới etcd [falsse]
+    - --data-dir=/var/lib/etcd #thư mục lưu trữ dữ liệu của etcd
+    - --initial-advertise-peer-urls=https://10.0.111.33:2380 #URL mà etcd sẽ quảng bá cho các peer (tức là các node etcd khác trong cluster) để giao tiếp với nhau.
+    - --initial-cluster=hlocs01vmmaster01=https://10.0.111.33:2380 #Cấu hình cho danh sách các peer trong cluster khi khởi động
+    - --key-file=/etc/kubernetes/pki/etcd/server.key #Đường dẫn tới khóa riêng (private key) của server etcd
+    - --listen-client-urls=https://127.0.0.1:2379,https://10.0.111.33:2379 #các địa chỉ IP mà etcd sẽ chấp nhận kết nối từ client
+    - --listen-metrics-urls=http://127.0.0.1:2381 #URL mà etcd sẽ sử dụng để lắng nghe các kết nối yêu cầu số liệu (metrics) cho việc giám sát.
+    - --listen-peer-urls=https://10.0.111.33:2380 #URL mà etcd sẽ lắng nghe kết nối từ các peer trong cluster.
+    - --name=hlocs01vmmaster01 #Đặt tên cho node etcd trong cluster [default]
+    - --peer-cert-file=/etc/kubernetes/pki/etcd/peer.crt #Đường dẫn tới chứng chỉ SSL của peer dùng để bảo mật kết nối giữa các peer trong cluster.
+    - --peer-client-cert-auth=true #Kích hoạt xác thực chứng chỉ khi các peer kết nối với nhau. [false]
+    - --peer-key-file=/etc/kubernetes/pki/etcd/peer.key #Đường dẫn tới khóa riêng của peer dùng để bảo mật kết nối giữa các peer trong cluster.
+    - --peer-trusted-ca-file=/etc/kubernetes/pki/etcd/ca.crt #Đường dẫn tới chứng chỉ CA (Certificate Authority) dùng để xác thực chứng chỉ của các peer khi chúng kết nối với nhau.
+    - --snapshot-count=10000 #Cấu hình số lượng các bản ghi (entries) trong etcd trước khi thực hiện một snapshot (sao lưu dữ liệu). Sau khi đạt số lượng này, etcd sẽ tạo một snapshot để giảm dung lượng lưu trữ. [100000]
+    - --trusted-ca-file=/etc/kubernetes/pki/etcd/ca.crt #Đường dẫn tới chứng chỉ CA dùng để xác thực các kết nối từ client tới etcd
+    image: docker-registry:4000/k8s.gcr.io/etcd:3.4.13-0 #hình ảnh Docker mà container sẽ sử dụng [docker.io]
+    imagePullPolicy: IfNotPresent # Chính sách này có nghĩa là Kubernetes chỉ tải lại hình ảnh container nếu nó không tồn tại trong node (nếu có thì không tải lại) [IfNotPresent]
+    livenessProbe: # kiểm tra tình trạng sống của container. Nếu liveness probe thất bại, container sẽ bị khởi động lại.
+      failureThreshold: 8 #Số lần probe thất bại trước khi container bị khởi động lại. [3]
+      httpGet: #Cấu hình lệnh HTTP GET
+        host: 127.0.0.1
+        path: /health
+        port: 2381
+        scheme: HTTP
+      initialDelaySeconds: 10 #Thời gian delay trước khi probe đầu tiên được thực hiện. [0]
+      periodSeconds: 10 #Khoảng thời gian giữa các lần kiểm tra. [10]
+      timeoutSeconds: 15 #Thời gian chờ phản hồi của probe trước khi coi là thất bại. [1]
+    name: etcd
+    resources: #xác định tài nguyên mà container yêu cầu (CPU và bộ nhớ)
+      requests: #tài nguyên tối thiểu mà container cần
+        cpu: 100m
+        memory: 100Mi
+    startupProbe: #probe được sử dụng để kiểm tra xem container đã sẵn sàng để bắt đầu nhận traffic chưa. Nếu probe này thất bại, container sẽ không nhận traffic cho đến khi nó thành công.
+      failureThreshold: 24
+      httpGet:
+        host: 127.0.0.1
+        path: /health
+        port: 2381
+        scheme: HTTP
+      initialDelaySeconds: 10
+      periodSeconds: 10
+      timeoutSeconds: 15
+    volumeMounts: #chỉ ra các volume mà container sẽ sử dụng, bao gồm nơi mà các volume này được gắn vào trong container.
+    - mountPath: /var/lib/etcd #volume etcd-data sẽ được gắn vào container tại các đường dẫn /var/lib/etcd
+      name: etcd-data
+    - mountPath: /etc/kubernetes/pki/etcd #volume etcd-certs sẽ được gắn vào container tại các đường dẫn và /etc/kubernetes/pki/etcd.
+      name: etcd-certs
+  hostNetwork: true #xác định container có sử dụng mạng của host (máy chủ) hay không. [false]
+  priorityClassName: system-node-critical #chỉ định mức độ ưu tiên cho Pod trong các tình huống tranh chấp tài nguyên [""]
+                                          #system-node-critical là một lớp ưu tiên cao, được dành cho các Pod quan trọng trong hệ thống, ví dụ như các thành phần quản lý cluster.
+  volumes: #các volume mà Pod sẽ sử dụng. Trong trường hợp này, có hai volume: etcd-data và etcd-certs
+  - hostPath: #hostPath định nghĩa các thư mục trên host mà sẽ được gắn vào container. Với loại DirectoryOrCreate, nếu thư mục không tồn tại, Kubernetes sẽ tự động tạo nó
+      path: /etc/kubernetes/pki/etcd
+      type: DirectoryOrCreate
+    name: etcd-certs
+  - hostPath:
+      path: /var/lib/etcd
+      type: DirectoryOrCreate
+    name: etcd-data
