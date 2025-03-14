@@ -1,88 +1,98 @@
 import pandas as pd
-import toml
-import os
-import re
+import yaml
 
-# Đường dẫn đến file Excel
-file_path = "config.toml.xlsx" 
+def convert_excel_to_yaml(excel_file, yaml_file):
+    df = pd.read_excel(excel_file)
 
-# Hàm encoder tùy chỉnh
-def custom_encoder(obj):
-    # Giả sử bạn muốn xử lý các kiểu dữ liệu đặc biệt, bạn có thể thêm logic vào đây.
-    # Trong trường hợp này, chúng ta không cần xử lý thêm, vì dữ liệu TOML đơn giản.
-    if isinstance(obj, dict):
-        # Nếu đối tượng là dictionary, trả về một định dạng TOML có các tables
-        return obj
-    raise TypeError(f"Type {type(obj)} not serializable")
+    yaml_dict = {}
+    
+    for _, row in df.iterrows():
+        keys = row["Parameter"].split(".")
+        value = row["Setup Value"]
 
-# Đọc file Excel vào DataFrame
-df = pd.read_excel(file_path)
+        flag = False
 
-# Kiểm tra xem các cột cần thiết có trong DataFrame không
-if "Parameter" not in df.columns or "Setup Value" not in df.columns:
-    print("File Excel phải chứa các cột 'Parameter' và 'Value'.")
-# Chuyển đổi DataFrame thành dictionary YAML
-yaml_dict = {}
-
-# Tạo một từ điển để lưu trữ các giá trị của các trường có thể có nhiều giá trị
-command_dict = {}
-
-for _, row in df.iterrows():
-    keys = row["Parameter"]
-
-    # Loại bỏ phần chỉ số mảng [0], [1], ... bằng regex
-    keys = re.sub(r"\[\d*\]", "", keys)
-
-    # Tách khóa theo dấu "."
-    keys = keys.split(".")
-
-    value = row["Setup Value"]
-
-    if pd.isna(value):  # Bỏ qua các giá trị rỗng
-        value =""
-
-    # Tạo từ điển lồng nhau
-    temp = yaml_dict
-    for key in keys[:-1]:  # Duyệt đến cấp cuối cùng của dictionary
-        temp = temp.setdefault(key, {})
-
-    final_key = keys[-1]
-
-    # Nếu có nhiều dòng có cùng khóa (ví dụ: command), cần lưu giá trị dưới dạng mảng
-    if final_key in temp:
-        # Nếu giá trị là một chuỗi, chuyển thành danh sách
-        if isinstance(temp[final_key], str):
-            temp[final_key] = [temp[final_key]]
-        # Thêm giá trị mới vào danh sách
-        temp[final_key].append(value)
-    else:
-        # Nếu chưa có giá trị, gán trực tiếp
-        temp[final_key] = value
-
-# Hàm custom_encoder - không thay đổi gì trong dữ liệu này
-# (bạn có thể tùy chỉnh nếu cần nhưng trong trường hợp này không cần thiết)
-def custom_encoder(value):
-    # Ở đây có thể thực hiện các xử lý tùy chỉnh nếu cần, ví dụ:
-    # Chuyển kiểu dữ liệu float thành chuỗi hoặc các kiểu đặc biệt khác
-    if isinstance(value, float):
-        return str(value)  # Chuyển đổi giá trị float thành chuỗi
-    return value
-
-# Hàm để áp dụng custom_encoder
-def apply_custom_encoder(data, encoder):
-    if isinstance(data, dict):
-        return {key: apply_custom_encoder(value, encoder) for key, value in data.items()}
-    elif isinstance(data, list):
-        return [apply_custom_encoder(item, encoder) for item in data]
-    else:
-        return encoder(data)  # Áp dụng encoder cho giá trị
-
-# Áp dụng custom_encoder trước khi ghi vào TOML
-encoded_data = apply_custom_encoder(yaml_dict, custom_encoder)
+        # Chuyển đổi giá trị thành kiểu phù hợp  
+        if pd.isna(value):  # Kiểm tra nếu value là NaN (trống)  
+            value = ""  # Gán None vào value thay vì bỏ qua  
+        elif isinstance(value, str) and value.upper() == "TRUE":  
+            value = True  
+        elif isinstance(value, str) and value.upper() == "FALSE":  
+            value = False  
+        elif isinstance(value, float) and value.is_integer():  
+            value = int(value)  
+        
+        # if isinstance(value, str) and value.upper() == "TRUE":
+        #     value = True
+        # elif isinstance(value, str) and value.upper() == "FALSE":
+        #     value = False
+        # elif isinstance(value, float) and value.is_integer():
+        #     value = int(value)
 
 
-# Lưu kết quả vào file TOML
-with open("output_test_1.toml", "w") as file:
-    toml.dump(encoded_data, file)
+        
+        temp = yaml_dict
 
-print("TOML file đã được tạo: output1.yaml")
+        # for key in keys[:-1]:
+        #     if "annotation" in key:
+        #         last_key = row["Parameter"]
+        #         temp = temp.setdefault(last_key, {})
+        #         temp[last_key] = value
+        #         flag = True
+        #         break
+        # if flag:
+        #     continue
+
+        # # Kiểm tra xem có chứa từ khóa "annotation"  
+        # if any("annotation" in key for key in keys[:-1]):  # Kiểm tra xem trong keys có từ khóa "annotation" không  
+        #     last_key = row["Parameter"]  
+        #     temp[last_key] = value  # Gán giá trị vào từ điển yaml_dict  
+        #     continue  # Bỏ qua phần còn lại và tiếp tục với dòng tiếp theo  
+
+        
+        
+        for key in keys[:-1]:
+            if key == "io" and keys[keys.index(key)-1] == "timeouts" :
+                
+                index = keys.index(key)  
+                spec = '.'.join(keys[index:])
+                # spec = \" + spec + \"
+                # last_key = row["Parameter"]  
+                temp[spec] = value
+                flag = True
+                break 
+
+            if "[" in key and "]" in key: 
+                base_key, index = key.split("[")
+                index = int(index.rstrip("]"))
+                temp = temp.setdefault(base_key, [])
+                while len(temp) <= index:
+                    temp.append({})
+                temp = temp[index]
+            else:
+                temp = temp.setdefault(key, {})
+
+        if flag:
+            continue
+
+        last_key = keys[-1]
+        if "[" in last_key and "]" in last_key: 
+            base_key, index = last_key.split("[")
+            index = int(index.rstrip("]"))
+            temp = temp.setdefault(base_key, [])
+            while len(temp) <= index:
+                temp.append(None)
+            temp[index] = value
+        else:
+            temp[last_key] = value
+
+
+    with open(yaml_file, "w") as f:
+        yaml.dump(yaml_dict, f, default_flow_style=False, sort_keys=False)
+
+    print(f"Done!")
+
+if __name__ == "__main__":
+    input_excel = "/workspaces/k8sconfig_edit/tom_edit/config.toml.xlsx" 
+    output_yaml = "step1_main.yaml"  
+    convert_excel_to_yaml(input_excel, output_yaml)

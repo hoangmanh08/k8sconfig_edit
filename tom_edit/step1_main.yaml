@@ -24,7 +24,7 @@ grpc:
   uid: 0
 metrics:
   address: ''
-  grpc_histogram: 'false'
+  grpc_histogram: false
 plugins:
   io:
     containerd:
@@ -42,32 +42,32 @@ plugins:
             cdi_spec_dirs:
             - /etc/cdi
             - /var/run/cdi
-            device_ownership_from_security_context: 'false'
-            disable_apparmor: 'false'
-            disable_cgroup: 'false'
-            disable_hugetlb_controller: 'true'
-            disable_proc_mount: 'false'
-            disable_tcp_service: 'true'
+            device_ownership_from_security_context: false
+            disable_apparmor: false
+            disable_cgroup: false
+            disable_hugetlb_controller: true
+            disable_proc_mount: false
+            disable_tcp_service: true
             drain_exec_sync_io_timeout: 0s
-            enable_cdi: 'false'
-            enable_selinux: 'false'
-            enable_tls_streaming: 'false'
-            enable_unprivileged_icmp: 'false'
-            enable_unprivileged_ports: 'false'
-            ignore_image_defined_volumes: 'false'
+            enable_cdi: false
+            enable_selinux: false
+            enable_tls_streaming: false
+            enable_unprivileged_icmp: false
+            enable_unprivileged_ports: false
+            ignore_image_defined_volumes: false
             image_pull_progress_timeout: 5m0s
             max_concurrent_downloads: 3
             max_container_log_line_size: 16384
-            netns_mounts_under_state_dir: 'false'
-            restrict_oom_score_adj: 'false'
+            netns_mounts_under_state_dir: false
+            restrict_oom_score_adj: false
             sandbox_image: 172.32.112.89:8018/registry.k8s.io/pause:3.10
             selinux_category_range: 1024
             stats_collect_period: 10
             stream_idle_timeout: 4h0m0s
             stream_server_address: 127.0.0.1
             stream_server_port: '0'
-            systemd_cgroup: 'false'
-            tolerate_missing_hugetlb_controller: 'true'
+            systemd_cgroup: false
+            tolerate_missing_hugetlb_controller: true
             unset_seccomp_profile: ''
             cni:
               bin_dir: /opt/cni/bin
@@ -75,21 +75,21 @@ plugins:
               conf_template: ''
               ip_pref: ''
               max_conf_num: 1
-              setup_serially: 'false'
+              setup_serially: false
             containerd:
               default_runtime_name: runc
-              disable_snapshot_annotations: 'true'
-              discard_unpacked_layers: 'false'
-              ignore_blockio_not_enabled_errors: 'false'
-              ignore_rdt_not_enabled_errors: 'false'
-              no_pivot: 'false'
+              disable_snapshot_annotations: true
+              discard_unpacked_layers: false
+              ignore_blockio_not_enabled_errors: false
+              ignore_rdt_not_enabled_errors: false
+              no_pivot: false
               snapshotter: overlayfs
               default_runtime:
                 base_runtime_spec: ''
                 cni_conf_dir: ''
                 cni_max_conf_num: 0
-                privileged_without_host_devices: 'false'
-                privileged_without_host_devices_all_devices_allowed: 'false'
+                privileged_without_host_devices: false
+                privileged_without_host_devices_all_devices_allowed: false
                 runtime_engine: ''
                 runtime_path: ''
                 runtime_root: ''
@@ -101,8 +101,8 @@ plugins:
                   base_runtime_spec: ''
                   cni_conf_dir: ''
                   cni_max_conf_num: 0
-                  privileged_without_host_devices: 'false'
-                  privileged_without_host_devices_all_devices_allowed: 'false'
+                  privileged_without_host_devices: false
+                  privileged_without_host_devices_all_devices_allowed: false
                   runtime_engine: ''
                   runtime_path: ''
                   runtime_root: ''
@@ -116,17 +116,17 @@ plugins:
                     CriuWorkPath: ''
                     IoGid: 0
                     IoUid: 0
-                    NoNewKeyring: 'false'
-                    NoPivotRoot: 'false'
+                    NoNewKeyring: false
+                    NoPivotRoot: false
                     Root: ''
                     ShimCgroup: ''
-                    SystemdCgroup: 'true'
+                    SystemdCgroup: true
               untrusted_workload_runtime:
                 base_runtime_spec: ''
                 cni_conf_dir: ''
                 cni_max_conf_num: 0
-                privileged_without_host_devices: 'false'
-                privileged_without_host_devices_all_devices_allowed: 'false'
+                privileged_without_host_devices: false
+                privileged_without_host_devices_all_devices_allowed: false
                 runtime_engine: ''
                 runtime_path: ''
                 runtime_root: ''
@@ -156,12 +156,12 @@ plugins:
       monitor:
         v1:
           cgroups:
-            no_prometheus: 'false'
+            no_prometheus: false
       nri:
         v1:
           nri:
-            disable: 'true'
-            disable_connections: 'false'
+            disable: true
+            disable_connections: false
             plugin_config_path: /etc/nri/conf.d
             plugin_path: /opt/nri/plugins
             plugin_registration_timeout: 5s
@@ -170,19 +170,21 @@ plugins:
       runtime:
         v1:
           linux:
-            no_shim: 'false'
+            no_shim: false
             runtime: runc
             runtime_root: ''
             shim: containerd-shim
-            shim_debug: 'false'
+            shim_debug: false
         v2:
           task:
-            platforms: linux/amd64
-            sched_core: 'false'
+            platforms:
+            - linux/amd64
+            sched_core: false
       service:
         v1:
           diff-service:
-            default: walking
+            default:
+            - walking
           tasks-service:
             blockio_config_file: ''
             rdt_config_file: ''
@@ -197,9 +199,9 @@ plugins:
           btrfs:
             root_path: ''
           devmapper:
-            async_remove: 'false'
+            async_remove: false
             base_image_size: ''
-            discard_blocks: 'false'
+            discard_blocks: false
             fs_options: ''
             fs_type: ''
             pool_name: ''
@@ -208,8 +210,8 @@ plugins:
             root_path: ''
           overlayfs:
             root_path: ''
-            sync_remove: 'false'
-            upperdir_label: 'false'
+            sync_remove: false
+            upperdir_label: false
           zfs:
             root_path: ''
       tracing:
@@ -217,7 +219,7 @@ plugins:
           v1:
             otlp:
               endpoint: ''
-              insecure: 'false'
+              insecure: false
               protocol: ''
       transfer:
         v1:
@@ -226,7 +228,7 @@ plugins:
             max_concurrent_downloads: 3
             max_concurrent_uploaded_layers: 3
             unpack_config:
-              differ: ''
+            - differ: ''
               platform: linux/amd64
               snapshotter: overlayfs
 stream_processors:
@@ -236,35 +238,32 @@ stream_processors:
         decoder:
           v1:
             tar:
-              accepts: application/vnd.oci.image.layer.v1.tar+encrypted
+              accepts:
+              - application/vnd.oci.image.layer.v1.tar+encrypted
               args:
               - --decryption-keys-path
               - /etc/containerd/ocicrypt/keys
-              env: OCICRYPT_KEYPROVIDER_CONFIG=/etc/containerd/ocicrypt/ocicrypt_keyprovider.conf
+              env:
+              - OCICRYPT_KEYPROVIDER_CONFIG=/etc/containerd/ocicrypt/ocicrypt_keyprovider.conf
               path: ctd-decoder
               returns: application/vnd.oci.image.layer.v1.tar
               gzip:
-                accepts: application/vnd.oci.image.layer.v1.tar+gzip+encrypted
+                accepts:
+                - application/vnd.oci.image.layer.v1.tar+gzip+encrypted
                 args:
                 - --decryption-keys-path
                 - /etc/containerd/ocicrypt/keys
-                env: OCICRYPT_KEYPROVIDER_CONFIG=/etc/containerd/ocicrypt/ocicrypt_keyprovider.conf
+                env:
+                - OCICRYPT_KEYPROVIDER_CONFIG=/etc/containerd/ocicrypt/ocicrypt_keyprovider.conf
                 path: ctd-decoder
                 returns: application/vnd.oci.image.layer.v1.tar+gzip
 timeouts:
-  io:
-    containerd:
-      timeout:
-        bolt:
-          open: 0s
-        metrics:
-          shimstats: 2s
-        shim:
-          cleanup: 5s
-          load: 5s
-          shutdown: 3s
-        task:
-          state: 2s
+  io.containerd.timeout.bolt.open: 0s
+  io.containerd.timeout.metrics.shimstats: 2s
+  io.containerd.timeout.shim.cleanup: 5s
+  io.containerd.timeout.shim.load: 5s
+  io.containerd.timeout.shim.shutdown: 3s
+  io.containerd.timeout.task.state: 2s
 ttrpc:
   address: ''
   gid: 0

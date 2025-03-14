@@ -105,8 +105,8 @@ def yaml_to_toml(yaml_file, toml_file):
 
 
 # Đường dẫn đến file YAML và file TOML  
-yaml_input = 'main_tom.yaml'  # Thay đổi tên file YAML của bạn tại đây  
-toml_output = 'yam_tom_output2.toml'  # Thay đổi tên file TOML của bạn tại đây  
+yaml_input = '/workspaces/k8sconfig_edit/tom_edit/step1_main.yaml'  # Thay đổi tên file YAML của bạn tại đây  
+toml_output = 'step2_yam_tom.toml'  # Thay đổi tên file TOML của bạn tại đây  
 
 # Thực hiện chuyển đổi  
 yaml_to_toml(yaml_input, toml_output)  
