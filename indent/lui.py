@@ -24,14 +24,14 @@ def transform_toml_content(toml_content):
 
 # Đọc nội dung từ file input.toml
 
-with open('/workspaces/k8sconfig_edit/yam_tom_output2.toml', 'r') as input_file:
+with open('/workspaces/k8sconfig_edit/step2_yam_tom.toml', 'r') as input_file:
     toml_content = input_file.read()
 
 # Chuyển đổi nội dung
 transformed_content = transform_toml_content(toml_content)
 
 # Ghi nội dung đã chuyển đổi vào file output.toml
-with open('lui_output.toml', 'w') as output_file:
+with open('step3_lui.toml', 'w') as output_file:
     output_file.write(transformed_content)
 
 print("Chuyển đổi thành công! Kết quả đã được lưu vào file output.toml")
