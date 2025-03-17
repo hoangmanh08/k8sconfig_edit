@@ -1,0 +1,36 @@
+{
+    "message": "Hai file TOML kh\u00e1c nhau.",
+    "values_changed": [
+        {
+            "key": "root['plugins']['io.containerd.grpc.v1.cri']['registry']",
+            "old_value": {
+                "config_path": "/etc/containerd/certs.d",
+                "auths": {},
+                "configs": {},
+                "headers": {},
+                "mirrors": {}
+            },
+            "new_value": {
+                "config_path": "/etc/containerd/certs.d"
+            }
+        }
+    ],
+    "dictionary_item_removed": [
+        {
+            "key": "root['temp']",
+            "removed_in": "file 2"
+        },
+        {
+            "key": "root['proxy_plugins']",
+            "removed_in": "file 2"
+        },
+        {
+            "key": "root['plugins']['io.containerd.grpc.v1.cri']['containerd']['default_runtime']['options']",
+            "removed_in": "file 2"
+        },
+        {
+            "key": "root['plugins']['io.containerd.grpc.v1.cri']['containerd']['untrusted_workload_runtime']['options']",
+            "removed_in": "file 2"
+        }
+    ]
+}

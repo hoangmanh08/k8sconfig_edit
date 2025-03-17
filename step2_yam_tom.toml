@@ -1,8 +1,10 @@
+  disabled_plugins = []
+  imports = []
   oom_score = 0
   plugin_dir = ""
+  required_plugins = []
   root = "/containerd"
   state = "/run/containerd"
-  temp = ""
   version = 2
 
 [cgroup]
@@ -62,7 +64,7 @@
   stats_collect_period = 10
   stream_idle_timeout = "4h0m0s"
   stream_server_address = "127.0.0.1"
-  stream_server_port = "0"
+  stream_server_port = 0
   systemd_cgroup = false
   tolerate_missing_hugetlb_controller = true
   unset_seccomp_profile = ""
@@ -72,7 +74,7 @@
   conf_dir = "/etc/cni/net.d"
   conf_template = ""
   ip_pref = ""
-  max_conf_num = 1
+  max_conf_num = true
   setup_serially = false
 
 [plugins."io.containerd.grpc.v1.cri".containerd]
@@ -88,6 +90,8 @@
   base_runtime_spec = ""
   cni_conf_dir = ""
   cni_max_conf_num = 0
+  container_annotations = []
+  pod_annotations = []
   privileged_without_host_devices = false
   privileged_without_host_devices_all_devices_allowed = false
   runtime_engine = ""
@@ -101,6 +105,8 @@
   base_runtime_spec = ""
   cni_conf_dir = ""
   cni_max_conf_num = 0
+  container_annotations = []
+  pod_annotations = []
   privileged_without_host_devices = false
   privileged_without_host_devices_all_devices_allowed = false
   runtime_engine = ""
@@ -127,6 +133,8 @@
   base_runtime_spec = ""
   cni_conf_dir = ""
   cni_max_conf_num = 0
+  container_annotations = []
+  pod_annotations = []
   privileged_without_host_devices = false
   privileged_without_host_devices_all_devices_allowed = false
   runtime_engine = ""
@@ -153,7 +161,7 @@
   interval = "10s"
 
 [plugins."io.containerd.internal.v1.tracing"]
-  sampling_ratio = 1
+  sampling_ratio = true
   service_name = "containerd"
 
 [plugins."io.containerd.metadata.v1.bolt"]
@@ -194,6 +202,7 @@
 
 [plugins."io.containerd.snapshotter.v1.blockfile"]
   fs_type = ""
+  mount_options = []
   root_path = ""
   scratch_file = ""
 
@@ -213,6 +222,7 @@
   root_path = ""
 
 [plugins."io.containerd.snapshotter.v1.overlayfs"]
+  mount_options = []
   root_path = ""
   sync_remove = false
   upperdir_label = false

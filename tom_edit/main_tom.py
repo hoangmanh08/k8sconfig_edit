@@ -19,6 +19,8 @@ def convert_excel_to_yaml(excel_file, yaml_file):
             value = True  
         elif isinstance(value, str) and value.upper() == "FALSE":  
             value = False  
+        elif isinstance(value, str) and value == '[]':
+            value = []
         elif isinstance(value, float) and value.is_integer():  
             value = int(value)  
         
@@ -93,6 +95,10 @@ def convert_excel_to_yaml(excel_file, yaml_file):
     print(f"Done!")
 
 if __name__ == "__main__":
-    input_excel = "/workspaces/k8sconfig_edit/tom_edit/config.toml.xlsx" 
+
+    input_excel = "/workspaces/k8sconfig_edit/input_tom.xlsx"
+
+
+    # input_excel = "/workspaces/k8sconfig_edit/tom_edit/config.toml.xlsx" 
     output_yaml = "step1_main.yaml"  
     convert_excel_to_yaml(input_excel, output_yaml)
