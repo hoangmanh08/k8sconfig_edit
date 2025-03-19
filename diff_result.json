@@ -1,5 +1,5 @@
 {
-    "message": "Hai file TOML kh\u00e1c nhau.",
+    "message": "Different",
     "values_changed": [
         {
             "key": "root['plugins']['io.containerd.grpc.v1.cri']['registry']",
@@ -17,20 +17,16 @@
     ],
     "dictionary_item_removed": [
         {
-            "key": "root['temp']",
-            "removed_in": "file 2"
+            "key": "root['temp']"
         },
         {
-            "key": "root['proxy_plugins']",
-            "removed_in": "file 2"
+            "key": "root['proxy_plugins']"
         },
         {
-            "key": "root['plugins']['io.containerd.grpc.v1.cri']['containerd']['default_runtime']['options']",
-            "removed_in": "file 2"
+            "key": "root['plugins']['io.containerd.grpc.v1.cri']['containerd']['default_runtime']['options']"
         },
         {
-            "key": "root['plugins']['io.containerd.grpc.v1.cri']['containerd']['untrusted_workload_runtime']['options']",
-            "removed_in": "file 2"
+            "key": "root['plugins']['io.containerd.grpc.v1.cri']['containerd']['untrusted_workload_runtime']['options']"
         }
     ]
 }
